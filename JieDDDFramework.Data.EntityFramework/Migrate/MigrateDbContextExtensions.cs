@@ -11,8 +11,13 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
 {
     public static class MigrateDbContextExtensions
     {
+        public static MigrateBuilder AddMigrateService(this IServiceCollection services)
+        {
+            return new MigrateBuilder(services);
+        }
+
         public static IServiceProvider MigrateDbContext<TContext>(this IServiceProvider serviceProvider,
-            Action<TContext, IServiceProvider> seeder) where TContext : Microsoft.EntityFrameworkCore.DbContext
+            Action<TContext, IServiceProvider> seeder = null) where TContext : Microsoft.EntityFrameworkCore.DbContext
         {
 
             using (var scope = serviceProvider.CreateScope())
@@ -39,8 +44,9 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
                     {
                         context.Database
                             .Migrate();
-
-                        seeder(context, services);
+                        var dbContextSeed = services.GetService<IDbContextSeed<TContext>>();
+                        dbContextSeed?.SeedAsync(context);
+                        seeder?.Invoke(context, services);
                     });
 
 

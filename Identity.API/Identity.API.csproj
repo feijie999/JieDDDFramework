@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JieDDDFramework.Data.EntityFramework\JieDDDFramework.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\JieDDDFramework.Module.Identity\JieDDDFramework.Module.Identity.csproj" />
   </ItemGroup>
 

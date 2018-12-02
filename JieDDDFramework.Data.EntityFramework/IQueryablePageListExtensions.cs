@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using JieDDDFramework.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JieDDDFramework.Core.Models
+namespace JieDDDFramework.Data.EntityFramework
 {
     public static class IQueryablePageListExtensions
     {
