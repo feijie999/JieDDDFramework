@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JieDDDFramework.Core", "JieDDDFramework.Core\JieDDDFramework.Core.csproj", "{FF328A32-979C-45BC-98D1-DAB2669FEAB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JieDDDFramework.Core", "JieDDDFramework.Core\JieDDDFramework.Core.csproj", "{FF328A32-979C-45BC-98D1-DAB2669FEAB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JieDDDFramework.Data", "JieDDDFramework.Data\JieDDDFramework.Data.csproj", "{C2656CA2-4B23-4BE1-A2FE-3CABA8C748AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JieDDDFramework.Data", "JieDDDFramework.Data\JieDDDFramework.Data.csproj", "{C2656CA2-4B23-4BE1-A2FE-3CABA8C748AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JieDDDFramework.Data.EntityFramework", "JieDDDFramework.Data.EntityFramework\JieDDDFramework.Data.EntityFramework.csproj", "{18D1173F-E777-48A9-B885-D07908F34775}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JieDDDFramework.Data.EntityFramework", "JieDDDFramework.Data.EntityFramework\JieDDDFramework.Data.EntityFramework.csproj", "{18D1173F-E777-48A9-B885-D07908F34775}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{7BCE3166-E9BC-4F67-BAAB-E5C3468FE41F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{5DC72A69-71F4-499E-81E9-935CD1E2E3DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JieDDDFramework.Module.Identity", "JieDDDFramework.Module.Identity\JieDDDFramework.Module.Identity.csproj", "{DEF8CCC6-C019-4948-AC9B-3BCA39E3743D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.API", "Identity.API\Identity.API.csproj", "{8DB4E2C6-BB18-4AF9-8979-1E1078290708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +39,19 @@ Global
 		{DEF8CCC6-C019-4948-AC9B-3BCA39E3743D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF8CCC6-C019-4948-AC9B-3BCA39E3743D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEF8CCC6-C019-4948-AC9B-3BCA39E3743D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB4E2C6-BB18-4AF9-8979-1E1078290708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB4E2C6-BB18-4AF9-8979-1E1078290708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB4E2C6-BB18-4AF9-8979-1E1078290708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB4E2C6-BB18-4AF9-8979-1E1078290708}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BA329D25-2C6E-4797-A174-5086A73ED416}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DEF8CCC6-C019-4948-AC9B-3BCA39E3743D} = {5DC72A69-71F4-499E-81E9-935CD1E2E3DA}
+		{8DB4E2C6-BB18-4AF9-8979-1E1078290708} = {7BCE3166-E9BC-4F67-BAAB-E5C3468FE41F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA329D25-2C6E-4797-A174-5086A73ED416}
 	EndGlobalSection
 EndGlobal

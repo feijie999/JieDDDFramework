@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JieDDDFramework.Module.Identity.Data
 {
-    public class IdentityUserDbContext:IdentityDbContext<ApplicationUser>
+    public class IdentityUserDbContext : IdentityDbContext<ApplicationUser>
     {
         public IdentityUserDbContext(DbContextOptions<IdentityUserDbContext> options) : base(options)
         {
