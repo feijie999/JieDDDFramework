@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using JieDDDFramework.Core.Configures;
 using JieDDDFramework.Module.Identity;
@@ -39,7 +41,7 @@ namespace Identity.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
                 .AddCustomFilter()
@@ -51,7 +53,7 @@ namespace Identity.API
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(settings.RedisConnectionString));
             }
 
-            var dbConnection = new MySqlConnection(settings.ConnectionStrings.DefaultConnection);
+            var dbConnection = new MySqlConnection(settings.ConnectionString);
 
             void OptionActions(DbContextOptionsBuilder option)
             {
@@ -68,8 +70,12 @@ namespace Identity.API
             rsa.ImportCspBlob(Convert.FromBase64String(settings.RsaPrivateKey));
             services.AddIdentityServer()
                 .AddSigningCredential(new RsaSecurityKey(rsa))
-                .AddAspNetIdentity<ApplicationUser>()
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
