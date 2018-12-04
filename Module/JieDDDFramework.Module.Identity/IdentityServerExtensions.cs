@@ -11,7 +11,7 @@ namespace JieDDDFramework.Module.Identity
 {
     public static class IdentityServerExtensions
     {
-       public static IdentityServerBuilder AddDefaultIdentityServerConfig<TApplicationUser>(this IdentityServerBuilder builder,Action<DbContextOptionsBuilder> dbContextOptionsBuilder) where TApplicationUser : ApplicationUser
+       public static IIdentityServerBuilder AddDefaultIdentityServerConfig<TApplicationUser>(this IIdentityServerBuilder builder,Action<DbContextOptionsBuilder> dbContextOptionsBuilder = null) where TApplicationUser : ApplicationUser
        {
            builder.AddAspNetIdentity<TApplicationUser>()
                .AddConfigurationStore(options => options.ConfigureDbContext = dbContextOptionsBuilder)

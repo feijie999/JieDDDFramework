@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.0.101" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.3" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JieDDDFramework.Core\JieDDDFramework.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ModelValidate\" />
+  </ItemGroup>
+
+</Project>

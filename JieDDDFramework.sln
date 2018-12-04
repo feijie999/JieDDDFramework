@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JieDDDFramework.Module.Iden
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "Example\Identity.API\Identity.API.csproj", "{B640DCDB-6470-4B01-8A56-1D8C83AE1707}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JieDDDFramework.Web", "JieDDDFramework.Web\JieDDDFramework.Web.csproj", "{DB4BE020-FFDE-4A40-A832-9A44D128F942}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{65DB4A64-149B-4334-BDED-6B4BD2667E92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSACryptoGenerate", "Tools\RSACryptoGenerate\RSACryptoGenerate.csproj", "{B7589F64-1BD0-4D61-81FE-FC74167B5E34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +49,14 @@ Global
 		{B640DCDB-6470-4B01-8A56-1D8C83AE1707}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B640DCDB-6470-4B01-8A56-1D8C83AE1707}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B640DCDB-6470-4B01-8A56-1D8C83AE1707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB4BE020-FFDE-4A40-A832-9A44D128F942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB4BE020-FFDE-4A40-A832-9A44D128F942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB4BE020-FFDE-4A40-A832-9A44D128F942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB4BE020-FFDE-4A40-A832-9A44D128F942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7589F64-1BD0-4D61-81FE-FC74167B5E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7589F64-1BD0-4D61-81FE-FC74167B5E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7589F64-1BD0-4D61-81FE-FC74167B5E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7589F64-1BD0-4D61-81FE-FC74167B5E34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +64,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CE0D234A-4903-472D-A492-B5F1C717FD45} = {5DC72A69-71F4-499E-81E9-935CD1E2E3DA}
 		{B640DCDB-6470-4B01-8A56-1D8C83AE1707} = {7BCE3166-E9BC-4F67-BAAB-E5C3468FE41F}
+		{B7589F64-1BD0-4D61-81FE-FC74167B5E34} = {65DB4A64-149B-4334-BDED-6B4BD2667E92}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA329D25-2C6E-4797-A174-5086A73ED416}
