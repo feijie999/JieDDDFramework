@@ -96,8 +96,8 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false,maxLength:10,fixedLength:true),
+                    ProviderKey = table.Column<string>(nullable: false, maxLength: 10, fixedLength: true),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },

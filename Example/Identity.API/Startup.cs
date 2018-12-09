@@ -54,10 +54,11 @@ namespace Identity.API
             }
 
             var dbConnection = new MySqlConnection(settings.ConnectionString);
+            var assembleyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             void OptionActions(DbContextOptionsBuilder option)
             {
-                option.UseMySQL(dbConnection, sqlOptions => { sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name); });
+                option.UseMySQL(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assembleyName); });
             }
 
             services.AddDbContext<IdentityUserDbContext>(OptionActions);

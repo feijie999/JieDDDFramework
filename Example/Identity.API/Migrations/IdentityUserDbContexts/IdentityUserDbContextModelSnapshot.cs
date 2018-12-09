@@ -140,10 +140,10 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider");
+            {
+                b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey");
+                b.Property<string>("ProviderKey");
 
                     b.Property<string>("ProviderDisplayName");
 
