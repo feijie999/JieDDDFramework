@@ -28,5 +28,10 @@ namespace JieDDDFramework.Data.EntityFramework.DbContext
             var result = await base.SaveChangesAsync(cancellationToken);
             return true;
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

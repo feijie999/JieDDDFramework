@@ -5,10 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using AspectCore.Configuration;
+using AspectCore.Extensions.Autofac;
+using AspectCore.Extensions.DependencyInjection;
+using AspectCore.Injector;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using JieDDDFramework.Core.Configures;
+using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Module.Identity;
 using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
@@ -52,13 +57,12 @@ namespace Identity.API
                 services.AddDataProtection(opts => { opts.ApplicationDiscriminator = "Identity.API"; })
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(settings.RedisConnectionString));
             }
-
-            var dbConnection = new MySqlConnection(settings.ConnectionString);
-            var assembleyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            
+            var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             void OptionActions(DbContextOptionsBuilder option)
             {
-                option.UseMySQL(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assembleyName); });
+                option.UseMySQL(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
             }
 
             services.AddDbContext<IdentityUserDbContext>(OptionActions);
@@ -72,11 +76,10 @@ namespace Identity.API
             services.AddIdentityServer()
                 .AddSigningCredential(new RsaSecurityKey(rsa))
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
-
-            var container = new ContainerBuilder();
-            container.Populate(services);
-
-            return new AutofacServiceProvider(container.Build());
+            var builder = new ContainerBuilder();
+            builder.RegisterDynamicProxy(configure=>configure.Interceptors.ConfigureEFInterceptors());
+            builder.Populate(services);
+            return new AutofacServiceProvider(builder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

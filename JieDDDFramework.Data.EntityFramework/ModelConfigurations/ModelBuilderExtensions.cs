@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using AspectCore.Extensions.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -18,7 +20,10 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
                 .Where(x => string.IsNullOrEmpty(@namespace) || x.Namespace == @namespace);
             foreach (var type in typesToRegister)
             {
-                dynamic configurationInstance = Activator.CreateInstance(type);
+                var constructorInfo = type.GetTypeInfo().GetConstructor(new Type[0]);
+                var reflector = constructorInfo.GetReflector();
+                dynamic configurationInstance = reflector.Invoke();
+                //dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.ApplyConfiguration(configurationInstance);
             }
         }

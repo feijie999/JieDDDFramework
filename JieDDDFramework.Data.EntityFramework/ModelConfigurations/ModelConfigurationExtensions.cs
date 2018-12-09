@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -16,6 +17,7 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
             service.TryAddTransient<IFixModelConfigurationService, DefaultFixModelConfigurationService>();
             service.TryAddTransient<IGlobalFilterService, DefaultGlobalFilterService>();
             service.TryAddTransient<IModelConfigurationProvider, DefaultModelConfigurationProvider>();
+            service.TryAddTransient<EFInterceptor>();
             return service;
         }
     }
