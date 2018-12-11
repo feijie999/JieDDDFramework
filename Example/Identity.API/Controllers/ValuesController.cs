@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +11,12 @@ namespace Identity.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+        /// <summary>
+        /// GET api/values
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<string>), (int)HttpStatusCode.OK)]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };

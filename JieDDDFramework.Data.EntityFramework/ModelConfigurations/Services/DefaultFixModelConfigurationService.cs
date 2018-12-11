@@ -43,7 +43,6 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
                     }
                     catch(Exception e)
                     {
-                        // ignored
                     }
                 }
             }

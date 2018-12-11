@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -34,6 +35,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Identity.API
 {
@@ -59,12 +61,13 @@ namespace Identity.API
                 services.AddDataProtection(opts => { opts.ApplicationDiscriminator = "Identity.API"; })
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(settings.RedisConnectionString));
             }
-            
+
             var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             void OptionActions(DbContextOptionsBuilder option)
             {
-                option.UseMySql(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
+                option.UseMySql(settings.ConnectionString,
+                    sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
             }
 
             services.AddDbContext<IdentityUserDbContext>(OptionActions);
@@ -72,7 +75,7 @@ namespace Identity.API
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityUserDbContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.AddMigrateService();
             services.AddEFModelConfiguration();
 
@@ -81,8 +84,9 @@ namespace Identity.API
             services.AddIdentityServer()
                 .AddSigningCredential(new RsaSecurityKey(rsa))
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
+            services.AddCustomSwagger(Configuration);
             var builder = new ContainerBuilder();
-            builder.RegisterDynamicProxy(configure=>configure.Interceptors.ConfigureEFInterceptors());
+            builder.RegisterDynamicProxy(configure => configure.Interceptors.ConfigureEFInterceptors());
             builder.Populate(services);
             return new AutofacServiceProvider(builder.Build());
         }
@@ -94,8 +98,35 @@ namespace Identity.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
+            app.UseForwardedHeaders();
+            app.UseMvcWithDefaultRoute();
+            app.UseSwagger()
+                .UseSwaggerUI(x=>x.SwaggerEndpoint("/swagger/v1/swagger.json","IdentityServerAPI"));
+        }
 
-            app.UseMvc();
+
+    }
+
+    static class CustomExtensionsMethods
+    {
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "授权认证API",
+                    Version = "v1",
+                    TermsOfService = "None",
+                    Description = "提供oauth2的授权服务"
+                });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,typeof(Startup).Namespace+".xml"));
+            });
+
+            return services;
         }
     }
 }
