@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using JieDDDFramework.Module.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Polly;
 
@@ -11,8 +14,14 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
 {
     public static class MigrateDbContextExtensions
     {
-        public static MigrateBuilder AddMigrateService(this IServiceCollection services)
+        public static MigrateBuilder AddMigrateService(this IServiceCollection services,Action<MigrateOptions> setupAction = null)
         {
+            var option = new MigrateOptions()
+            {
+                Enabled = true
+            };
+            setupAction?.Invoke(option);
+            services.TryAddSingleton(option);
             return new MigrateBuilder(services);
         }
 
@@ -23,6 +32,11 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
             using (var scope = serviceProvider.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var options = services.GetService<MigrateOptions>();
+                if (options == null || !options.Enabled)
+                {
+                    return serviceProvider;
+                }
 
                 var logger = services.GetRequiredService<ILogger<TContext>>();
 
@@ -42,8 +56,7 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
 
                     retry.Execute(() =>
                     {
-                        context.Database
-                            .Migrate();
+                        context.Database.Migrate();
                         var dbContextSeed = services.GetService<IDbContextSeed<TContext>>();
                         dbContextSeed?.SeedAsync(context);
                         seeder?.Invoke(context, services);

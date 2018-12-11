@@ -14,6 +14,8 @@ using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using JieDDDFramework.Core.Configures;
 using JieDDDFramework.Data.EntityFramework.AopConfigurations;
+using JieDDDFramework.Data.EntityFramework.Migrate;
+using JieDDDFramework.Data.EntityFramework.ModelConfigurations;
 using JieDDDFramework.Module.Identity;
 using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
@@ -30,7 +32,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MySql.Data.EntityFrameworkCore.Infraestructure;
 using MySql.Data.MySqlClient;
 using StackExchange.Redis;
 
@@ -50,7 +51,8 @@ namespace Identity.API
         {
             services.AddMvc()
                 .AddCustomFilter()
-                .AddCustomFluentValidation();
+                .AddCustomFluentValidation()
+                .AddControllersAsServices();
             var settings = services.ConfigureOption(Configuration, () => new AppSettings());
             if (settings.IsClusterEnv)
             {
@@ -62,7 +64,7 @@ namespace Identity.API
 
             void OptionActions(DbContextOptionsBuilder option)
             {
-                option.UseMySQL(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
+                option.UseMySql(settings.ConnectionString, sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
             }
 
             services.AddDbContext<IdentityUserDbContext>(OptionActions);
@@ -70,6 +72,9 @@ namespace Identity.API
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityUserDbContext>()
                 .AddDefaultTokenProviders();
+            
+            services.AddMigrateService();
+            services.AddEFModelConfiguration();
 
             var rsa = new RSACryptoServiceProvider();
             rsa.ImportCspBlob(Convert.FromBase64String(settings.RsaPrivateKey));

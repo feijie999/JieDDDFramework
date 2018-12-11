@@ -10,9 +10,12 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
 {
     public static class ModelConfigurationExtensions
     {
-        public static IServiceCollection AddEFModelConfiguration(this IServiceCollection service, Action<ModelConfigurationOption> setupAction)
+        public static IServiceCollection AddEFModelConfiguration(this IServiceCollection service,
+            Action<ModelConfigurationOption> setupAction = null)
         {
-            service.Configure(setupAction);
+            var option = new ModelConfigurationOption();
+            setupAction?.Invoke(option);
+            service.TryAddSingleton(option);
             service.TryAddTransient<IAutoApplyConfigurationService, DefaultAutoApplyConfigurationService>();
             service.TryAddTransient<IFixModelConfigurationService, DefaultFixModelConfigurationService>();
             service.TryAddTransient<IGlobalFilterService, DefaultGlobalFilterService>();

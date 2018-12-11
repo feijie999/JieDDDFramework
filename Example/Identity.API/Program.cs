@@ -18,7 +18,8 @@ namespace Identity.API
         public static void Main(string[] args)
         {
             var webHost = CreateWebHostBuilder(args).Build();
-            webHost.Services.MigrateDbContext<PersistedGrantDbContext>()
+            webHost.Services
+                .MigrateDbContext<PersistedGrantDbContext>()
                 .MigrateDbContext<ConfigurationDbContext>()
                 .MigrateDbContext<IdentityUserDbContext>();
             webHost.Run();

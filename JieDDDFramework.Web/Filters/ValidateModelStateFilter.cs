@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace JieDDDFramework.Web.Filters
 {
-    public class ValidateModelStateFilter : ActionFilterAttribute
+    public class ValidateModelStateFilter :  IActionFilter
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ModelState.IsValid)
             {
@@ -14,6 +14,11 @@ namespace JieDDDFramework.Web.Filters
             }
             var result = new ModelErrorResult(context.ModelState);
             context.Result = new BadRequestObjectResult(result);
+        }
+
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            
         }
     }
 }

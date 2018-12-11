@@ -8,7 +8,6 @@
     <PackageReference Include="AspectCore.Core" Version="1.1.0" />
     <PackageReference Include="AspectCore.Extensions.Autofac" Version="1.1.0" />
     <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="1.1.0" />
-    <PackageReference Include="AspectCore.Extensions.Reflection" Version="1.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.4" />
@@ -17,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JieDDDFramework.Data\JieDDDFramework.Data.csproj" />
+    <ProjectReference Include="..\Module\JieDDDFramework.Module.Identity\JieDDDFramework.Module.Identity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

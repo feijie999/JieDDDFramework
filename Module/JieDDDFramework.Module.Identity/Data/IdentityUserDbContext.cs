@@ -12,6 +12,11 @@ namespace JieDDDFramework.Module.Identity.Data
         {
         }
 
+        public void OnModelCreating1(ModelBuilder builder)
+        {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

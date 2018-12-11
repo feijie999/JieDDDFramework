@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Identity.API.Migrations.ConfigurationDbContexts
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,15 +13,15 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Enabled = table.Column<short>(nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Enabled = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     DisplayName = table.Column<string>(maxLength: 200, nullable: true),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     Updated = table.Column<DateTime>(nullable: true),
                     LastAccessed = table.Column<DateTime>(nullable: true),
-                    NonEditable = table.Column<short>(nullable: false)
+                    NonEditable = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,26 +33,26 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Enabled = table.Column<short>(nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Enabled = table.Column<bool>(nullable: false),
                     ClientId = table.Column<string>(maxLength: 200, nullable: false),
                     ProtocolType = table.Column<string>(maxLength: 200, nullable: false),
-                    RequireClientSecret = table.Column<short>(nullable: false),
+                    RequireClientSecret = table.Column<bool>(nullable: false),
                     ClientName = table.Column<string>(maxLength: 200, nullable: true),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     ClientUri = table.Column<string>(maxLength: 2000, nullable: true),
                     LogoUri = table.Column<string>(maxLength: 2000, nullable: true),
-                    RequireConsent = table.Column<short>(nullable: false),
-                    AllowRememberConsent = table.Column<short>(nullable: false),
-                    AlwaysIncludeUserClaimsInIdToken = table.Column<short>(nullable: false),
-                    RequirePkce = table.Column<short>(nullable: false),
-                    AllowPlainTextPkce = table.Column<short>(nullable: false),
-                    AllowAccessTokensViaBrowser = table.Column<short>(nullable: false),
+                    RequireConsent = table.Column<bool>(nullable: false),
+                    AllowRememberConsent = table.Column<bool>(nullable: false),
+                    AlwaysIncludeUserClaimsInIdToken = table.Column<bool>(nullable: false),
+                    RequirePkce = table.Column<bool>(nullable: false),
+                    AllowPlainTextPkce = table.Column<bool>(nullable: false),
+                    AllowAccessTokensViaBrowser = table.Column<bool>(nullable: false),
                     FrontChannelLogoutUri = table.Column<string>(maxLength: 2000, nullable: true),
-                    FrontChannelLogoutSessionRequired = table.Column<short>(nullable: false),
+                    FrontChannelLogoutSessionRequired = table.Column<bool>(nullable: false),
                     BackChannelLogoutUri = table.Column<string>(maxLength: 2000, nullable: true),
-                    BackChannelLogoutSessionRequired = table.Column<short>(nullable: false),
-                    AllowOfflineAccess = table.Column<short>(nullable: false),
+                    BackChannelLogoutSessionRequired = table.Column<bool>(nullable: false),
+                    AllowOfflineAccess = table.Column<bool>(nullable: false),
                     IdentityTokenLifetime = table.Column<int>(nullable: false),
                     AccessTokenLifetime = table.Column<int>(nullable: false),
                     AuthorizationCodeLifetime = table.Column<int>(nullable: false),
@@ -59,12 +60,12 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                     AbsoluteRefreshTokenLifetime = table.Column<int>(nullable: false),
                     SlidingRefreshTokenLifetime = table.Column<int>(nullable: false),
                     RefreshTokenUsage = table.Column<int>(nullable: false),
-                    UpdateAccessTokenClaimsOnRefresh = table.Column<short>(nullable: false),
+                    UpdateAccessTokenClaimsOnRefresh = table.Column<bool>(nullable: false),
                     RefreshTokenExpiration = table.Column<int>(nullable: false),
                     AccessTokenType = table.Column<int>(nullable: false),
-                    EnableLocalLogin = table.Column<short>(nullable: false),
-                    IncludeJwtId = table.Column<short>(nullable: false),
-                    AlwaysSendClientClaims = table.Column<short>(nullable: false),
+                    EnableLocalLogin = table.Column<bool>(nullable: false),
+                    IncludeJwtId = table.Column<bool>(nullable: false),
+                    AlwaysSendClientClaims = table.Column<bool>(nullable: false),
                     ClientClaimsPrefix = table.Column<string>(maxLength: 200, nullable: true),
                     PairWiseSubjectSalt = table.Column<string>(maxLength: 200, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
@@ -73,7 +74,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                     UserSsoLifetime = table.Column<int>(nullable: true),
                     UserCodeType = table.Column<string>(maxLength: 100, nullable: true),
                     DeviceCodeLifetime = table.Column<int>(nullable: false),
-                    NonEditable = table.Column<short>(nullable: false)
+                    NonEditable = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,17 +86,17 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Enabled = table.Column<short>(nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Enabled = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     DisplayName = table.Column<string>(maxLength: 200, nullable: true),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
-                    Required = table.Column<short>(nullable: false),
-                    Emphasize = table.Column<short>(nullable: false),
-                    ShowInDiscoveryDocument = table.Column<short>(nullable: false),
+                    Required = table.Column<bool>(nullable: false),
+                    Emphasize = table.Column<bool>(nullable: false),
+                    ShowInDiscoveryDocument = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Updated = table.Column<DateTime>(nullable: true),
-                    NonEditable = table.Column<short>(nullable: false)
+                    NonEditable = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +108,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(maxLength: 200, nullable: false),
                     ApiResourceId = table.Column<int>(nullable: false)
                 },
@@ -127,7 +128,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Key = table.Column<string>(maxLength: 250, nullable: false),
                     Value = table.Column<string>(maxLength: 2000, nullable: false),
                     ApiResourceId = table.Column<int>(nullable: false)
@@ -148,13 +149,13 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     DisplayName = table.Column<string>(maxLength: 200, nullable: true),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
-                    Required = table.Column<short>(nullable: false),
-                    Emphasize = table.Column<short>(nullable: false),
-                    ShowInDiscoveryDocument = table.Column<short>(nullable: false),
+                    Required = table.Column<bool>(nullable: false),
+                    Emphasize = table.Column<bool>(nullable: false),
+                    ShowInDiscoveryDocument = table.Column<bool>(nullable: false),
                     ApiResourceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -173,7 +174,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Value = table.Column<string>(maxLength: 4000, nullable: false),
                     Expiration = table.Column<DateTime>(nullable: true),
@@ -197,7 +198,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(maxLength: 250, nullable: false),
                     Value = table.Column<string>(maxLength: 250, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
@@ -218,7 +219,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Origin = table.Column<string>(maxLength: 150, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -238,7 +239,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     GrantType = table.Column<string>(maxLength: 250, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -258,7 +259,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Provider = table.Column<string>(maxLength: 200, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -278,7 +279,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PostLogoutRedirectUri = table.Column<string>(maxLength: 2000, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -298,7 +299,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Key = table.Column<string>(maxLength: 250, nullable: false),
                     Value = table.Column<string>(maxLength: 2000, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
@@ -319,7 +320,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RedirectUri = table.Column<string>(maxLength: 2000, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -339,7 +340,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Scope = table.Column<string>(maxLength: 200, nullable: false),
                     ClientId = table.Column<int>(nullable: false)
                 },
@@ -359,7 +360,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(maxLength: 2000, nullable: true),
                     Value = table.Column<string>(maxLength: 4000, nullable: false),
                     Expiration = table.Column<DateTime>(nullable: true),
@@ -383,7 +384,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(maxLength: 200, nullable: false),
                     IdentityResourceId = table.Column<int>(nullable: false)
                 },
@@ -403,7 +404,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Key = table.Column<string>(maxLength: 250, nullable: false),
                     Value = table.Column<string>(maxLength: 2000, nullable: false),
                     IdentityResourceId = table.Column<int>(nullable: false)
@@ -424,7 +425,7 @@ namespace Identity.API.Migrations.ConfigurationDbContexts
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(maxLength: 200, nullable: false),
                     ApiScopeId = table.Column<int>(nullable: false)
                 },

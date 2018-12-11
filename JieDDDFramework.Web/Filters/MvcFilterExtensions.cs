@@ -9,6 +9,8 @@ namespace JieDDDFramework.Web.Filters
     {
         public static IMvcBuilder AddCustomFilter(this IMvcBuilder builder)
         {
+            builder.Services.AddScoped<ValidateModelStateFilter>();
+            builder.Services.AddScoped<HttpGlobalExceptionFilter>();
             builder.AddMvcOptions(x =>
             {
                 x.Filters.AddService<ValidateModelStateFilter>();

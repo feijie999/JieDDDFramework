@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
 {
@@ -16,13 +18,30 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
         {
             foreach (var entityType in builder.Model.GetEntityTypes())
             {
-                foreach (var mutableProperty in entityType.FindPrimaryKey().Properties)
+                var keys = entityType.FindPrimaryKey();
+                if (keys == null)
+                {
+                    foreach (var property in entityType.GetProperties().Where(x => x.ClrType == typeof(string)))
+                    {
+                        var propertyBuilder =builder.Entity(entityType.ClrType).Property<string>(property.Name);
+                        var length = propertyBuilder.Metadata.GetMaxLength();
+                        if (length == null)
+                        {
+                            propertyBuilder.HasMaxLength(64);
+                        }
+                    }
+                    continue;
+                }
+                foreach (var mutableProperty in keys.Properties)
                 {
                     try
                     {
-                        builder.Entity(entityType.ClrType).Property<string>(mutableProperty.Name).HasMaxLength(64);
+                        if (mutableProperty.ClrType == typeof(string))
+                        {
+                            builder.Entity(entityType.ClrType).Property<string>(mutableProperty.Name).HasMaxLength(64);
+                        }
                     }
-                    catch
+                    catch(Exception e)
                     {
                         // ignored
                     }

@@ -12,6 +12,7 @@ namespace JieDDDFramework.Data.EntityFramework.AopConfigurations
         public static InterceptorCollection ConfigureEFInterceptors(this InterceptorCollection interceptorCollection)
         {
             interceptorCollection.AddTyped<EFInterceptor>(Predicates.ForMethod("*DbContext", "OnModelCreating"));
+
             return interceptorCollection;
         }
     }
