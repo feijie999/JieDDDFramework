@@ -4,6 +4,19 @@
         <name>Identity.API</name>
     </assembly>
     <members>
+        <member name="M:Identity.API.Controllers.AccountController.Login(Identity.API.Models.LoginViewModel)">
+            <summary>
+            登录
+            </summary>
+            <remarks>
+                {
+                    "email":"demo@xx.com",
+                    "password":"123456"
+                }
+            </remarks>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:Identity.API.Controllers.ValuesController.Get">
             <summary>
             GET api/values

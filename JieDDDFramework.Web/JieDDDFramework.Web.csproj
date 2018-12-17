@@ -16,8 +16,4 @@
     <ProjectReference Include="..\JieDDDFramework.Core\JieDDDFramework.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ModelValidate\" />
-  </ItemGroup>
-
 </Project>

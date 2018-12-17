@@ -14,6 +14,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Identity.API.Init;
+using Identity.API.Models;
 using JieDDDFramework.Core.Configures;
 using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Data.EntityFramework.Migrate;
@@ -54,7 +55,11 @@ namespace Identity.API
         {
             services.AddMvc()
                 .AddCustomFilter()
-                .AddCustomFluentValidation()
+                .AddCustomFluentValidation(x=>
+                {
+                    x.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    x.RegisterValidatorsFromAssemblyContaining<LoginViewModelValidator>();
+                })
                 .AddControllersAsServices();
             var settings = services.ConfigureOption(Configuration, () => new AppSettings());
             if (settings.IsClusterEnv)

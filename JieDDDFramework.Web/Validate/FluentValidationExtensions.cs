@@ -5,6 +5,7 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using JieDDDFramework.Web.Models;
+using JieDDDFramework.Web.ModelValidate;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JieDDDFramework.Web.Validate

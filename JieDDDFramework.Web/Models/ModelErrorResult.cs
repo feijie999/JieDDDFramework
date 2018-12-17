@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
 using JieDDDFramework.Core.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -7,23 +8,28 @@ namespace JieDDDFramework.Web.Models
 {
     public class ModelErrorResult : ApiResult
     {
-        public ModelStateDictionary ModelStateDictionary { get; set; }
+        public ModelErrorResult()
+        {
 
+        }
         public ModelErrorResult(ModelStateDictionary modelStateDictionary)
         {
             Success = false;
             Code = -1;
-            ModelStateDictionary = modelStateDictionary;
-            Message = GetValidationErrors().FirstOrDefault();
+            Message = modelStateDictionary.Keys.SelectMany(x=>modelStateDictionary[x].Errors)
+                .Select(x=>x.ErrorMessage)
+                .FirstOrDefault();
         }
 
-        private List<string> GetValidationErrors()
+        public ModelErrorResult(ValidationFailure validationFailure)
         {
-            return ModelStateDictionary
-                .Keys
-                .SelectMany(k => ModelStateDictionary[k].Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
+            Success = false;
+            Code = -1;
+            if (int.TryParse(validationFailure.ErrorCode, out var errorCode))
+            {
+                Code = errorCode;
+            }
+            Message = validationFailure.ErrorMessage;
         }
     }
 }
