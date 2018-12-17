@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Identity.API.Migrations.IdentityUserDbContexts
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 64, nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -26,7 +26,7 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 64, nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -97,10 +97,10 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 64, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 64, nullable: false),
-                    ProviderDisplayName = table.Column<string>(maxLength: 64, nullable: true),
-                    UserId = table.Column<string>(maxLength: 64, nullable: false)
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,8 +117,8 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(maxLength: 64, nullable: false),
-                    RoleId = table.Column<string>(maxLength: 64, nullable: false)
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,10 +141,10 @@ namespace Identity.API.Migrations.IdentityUserDbContexts
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(maxLength: 64, nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 64, nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: false),
-                    Value = table.Column<string>(maxLength: 64, nullable: true)
+                    UserId = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

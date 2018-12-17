@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 using JieDDDFramework.Module.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -54,15 +55,13 @@ namespace JieDDDFramework.Data.EntityFramework.Migrate
                             TimeSpan.FromSeconds(8),
                         });
 
-                    retry.Execute(() =>
-                    {
-                        context.Database.Migrate();
-                        var dbContextSeed = services.GetService<IDbContextSeed<TContext>>();
-                        dbContextSeed?.SeedAsync(context);
-                        seeder?.Invoke(context, services);
-                    });
-
-
+                     retry.Execute(() =>
+                     {
+                         context.Database.Migrate();
+                         var dbContextSeed = services.GetService<IDbContextSeed<TContext>>();
+                         dbContextSeed?.SeedAsync(context).Wait();
+                         seeder?.Invoke(context, services);
+                     });
                     logger.LogInformation($"DbContext=>{typeof(TContext).Name} 迁移完成");
                 }
                 catch (Exception ex)

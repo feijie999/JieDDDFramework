@@ -13,6 +13,7 @@ using AspectCore.Injector;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
+using Identity.API.Init;
 using JieDDDFramework.Core.Configures;
 using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Data.EntityFramework.Migrate;
@@ -76,7 +77,9 @@ namespace Identity.API
                 .AddEntityFrameworkStores<IdentityUserDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMigrateService();
+            services.AddMigrateService()
+                .AddDbSeed(new ConfigurationDbContextSeed(Configuration))
+                .AddDbSeed(new IdentityUserDbContextSeed());
             services.AddEFModelConfiguration();
 
             var rsa = new RSACryptoServiceProvider();
@@ -104,8 +107,6 @@ namespace Identity.API
             app.UseSwagger()
                 .UseSwaggerUI(x=>x.SwaggerEndpoint("/swagger/v1/swagger.json","IdentityServerAPI"));
         }
-
-
     }
 
     static class CustomExtensionsMethods
