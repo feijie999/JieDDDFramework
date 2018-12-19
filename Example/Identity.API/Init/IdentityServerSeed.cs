@@ -23,7 +23,7 @@ namespace Identity.API.Init
             };
         }
 
-        public static IEnumerable<Client> GetClients(Dictionary<string, string> clientsUrl)
+        public static IEnumerable<Client> GetClients(Dictionary<string, string> clientsUrl,string secret)
         {
             return new List<Client>
             {
@@ -33,7 +33,7 @@ namespace Identity.API.Init
                     ClientName = "MVC Client",
                     ClientSecrets = new List<Secret>
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(secret.Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",
                     AllowedGrantTypes = GrantTypes.Hybrid,
@@ -65,7 +65,7 @@ namespace Identity.API.Init
                     ClientName = "MVC Client Test",
                     ClientSecrets = new List<Secret>
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(secret.Sha256())
                     },
                     ClientUri = $"{clientsUrl["Mvc"]}",
                     AllowedGrantTypes = GrantTypes.Hybrid,
@@ -101,6 +101,23 @@ namespace Identity.API.Init
                     AllowedScopes =
                     {
                         "order"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "identityswaggerui",
+                    ClientName = "Identity Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "identity"
                     }
                 }
             };

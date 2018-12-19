@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using AspectCore.Configuration;
 using AspectCore.Extensions.Autofac;
@@ -15,6 +16,7 @@ using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Identity.API.Init;
 using Identity.API.Models;
+using IdentityServer4;
 using JieDDDFramework.Core.Configures;
 using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Data.EntityFramework.Migrate;
@@ -24,6 +26,7 @@ using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
 using JieDDDFramework.Web.Filters;
 using JieDDDFramework.Web.Validate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -92,6 +95,7 @@ namespace Identity.API
             services.AddIdentityServer()
                 .AddSigningCredential(new RsaSecurityKey(rsa))
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
+            services.AddJwtAuthentication(Configuration.GetSection("JwtSettings"));
             services.AddCustomSwagger(Configuration);
             var builder = new ContainerBuilder();
             builder.RegisterDynamicProxy(configure => configure.Interceptors.ConfigureEFInterceptors());
@@ -108,6 +112,7 @@ namespace Identity.API
             }
             app.UseStaticFiles();
             app.UseForwardedHeaders();
+            app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
             app.UseSwagger()
                 .UseSwaggerUI(x=>x.SwaggerEndpoint("/swagger/v1/swagger.json","IdentityServerAPI"));
@@ -119,6 +124,7 @@ namespace Identity.API
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var setting = services.ConfigureOption(configuration.GetSection("JwtSettings"), () => new JwtSettings());
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
@@ -129,9 +135,41 @@ namespace Identity.API
                     TermsOfService = "None",
                     Description = "提供oauth2的授权服务"
                 });
+                options.AddSecurityDefinition("oauth2",new OAuth2Scheme()
+                {
+                    Flow = "implicit",
+                    AuthorizationUrl = setting.Issuer+ "/connect/authorize",
+                    TokenUrl = setting.Issuer+ "/connect/token",
+                    Scopes = new Dictionary<string, string>()
+                    {
+
+                        { IdentityServerConstants.StandardScopes.OpenId,"User Identity"},
+                        { IdentityServerConstants.StandardScopes.Profile,"User Profile"},
+                        { "identity", "Identity API" }
+                    }
+                });
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,typeof(Startup).Namespace+".xml"));
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,IConfiguration configuration)
+        {
+            var setting = services.ConfigureOption(configuration.GetSection("JwtSettings"),()=>new JwtSettings());
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = setting.Issuer,
+                    ValidAudience = setting.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
+                };
+            });
             return services;
         }
     }
