@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Identity.API.Models;
 using IdentityServer4.Services;
 using JieDDDFramework.Module.Identity.Models;
+using JieDDDFramework.Web;
 using JieDDDFramework.Web.ModelValidate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.API.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -45,15 +46,15 @@ namespace Identity.API.Controllers
                 await _signInManager.SignInAsync(user, model.RememberMe);
                 if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                 {
-                    return Redirect(model.ReturnUrl);
+                    return Success(model.ReturnUrl);
                 }
             }
             else
             {
-
+                return Fail("登陆失败");
             }
           
-            return Ok();
+            return Success();
         }
     }
 }
