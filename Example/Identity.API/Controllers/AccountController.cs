@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Identity.API.Models;
+using IdentityModel.Client;
 using IdentityServer4.Services;
+using JieDDDFramework.Module.Identity;
 using JieDDDFramework.Module.Identity.Models;
 using JieDDDFramework.Web;
 using JieDDDFramework.Web.ModelValidate;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Identity.API.Controllers
 {
@@ -18,12 +22,14 @@ namespace Identity.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
+        private readonly JwtSettings _jwtSettings;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction, IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _interaction = interaction;
+            _jwtSettings = jwtSettings.Value;
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <remarks>
         ///     {
-        ///         "email":"demo@xx.com",
+        ///         "email":"demouser@xx.com",
         ///         "password":"123456"
         ///     }
         /// </remarks>
@@ -41,20 +47,22 @@ namespace Identity.API.Controllers
         public async Task<IActionResult> Login([FromBody, Validator]LoginViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (await _userManager.CheckPasswordAsync(user,model.Password))
+            if (user!=null && await _userManager.CheckPasswordAsync(user,model.Password))
             {
-                await _signInManager.SignInAsync(user, model.RememberMe);
+                var discoveryResponse  = await DiscoveryClient.GetAsync(_jwtSettings.Issuer);
+                var tokenClient = new TokenClient(discoveryResponse.TokenEndpoint,_jwtSettings.ClientId,_jwtSettings.SecretKey);
+                var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(model.Email, model.Password);
+                //await _signInManager.SignInAsync(user, model.RememberMe);
                 if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                 {
-                    return Success(model.ReturnUrl);
+                    return Success(new { tokenResponse,model.ReturnUrl});
                 }
+                return Success(new { tokenResponse });
             }
             else
             {
                 return Fail("登陆失败");
             }
-          
-            return Success();
         }
     }
 }

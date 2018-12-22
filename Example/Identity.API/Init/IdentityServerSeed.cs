@@ -11,7 +11,7 @@ namespace Identity.API.Init
         {
             return new List<ApiResource>()
             {
-                new ApiResource("job","Job Service")
+                new ApiResource("identity","Identity Service")
             };
         }
         public static IEnumerable<IdentityResource> GetResources()
@@ -107,9 +107,13 @@ namespace Identity.API.Init
                 {
                     ClientId = "identityswaggerui",
                     ClientName = "Identity Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret(secret.Sha256())
+                    },
                     RedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
                     PostLogoutRedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
 
@@ -117,6 +121,7 @@ namespace Identity.API.Init
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "identity"
                     }
                 }

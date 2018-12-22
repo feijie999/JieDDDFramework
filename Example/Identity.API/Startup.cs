@@ -156,17 +156,18 @@ namespace Identity.API
 
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,IConfiguration configuration)
         {
-            var setting = services.ConfigureOption(configuration.GetSection("JwtSettings"),()=>new JwtSettings());
+            var setting = services.ConfigureOption(configuration,()=>new JwtSettings());
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters
+                o.Authority = setting.Issuer;
+                o.Audience = setting.Audience;
+                o.RequireHttpsMetadata = false;
+                o.TokenValidationParameters =new TokenValidationParameters()
                 {
-                    ValidIssuer = setting.Issuer,
-                    ValidAudience = setting.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
                 };
             });

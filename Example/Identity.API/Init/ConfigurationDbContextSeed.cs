@@ -30,6 +30,8 @@ namespace Identity.API.Init
 #if DEBUG
             var clients = context.Clients.ToList();
             context.RemoveRange(clients);
+            var apiResources = context.ApiResources.ToList();
+            context.RemoveRange(apiResources);
             await context.SaveChangesAsync();
 #endif
             if (!context.Clients.Any())

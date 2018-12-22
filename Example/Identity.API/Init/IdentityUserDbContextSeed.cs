@@ -14,6 +14,12 @@ namespace Identity.API.Init
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher = new PasswordHasher<ApplicationUser>();
         public async Task SeedAsync(IdentityUserDbContext context)
         {
+#if DEBUG
+            var users = context.Users.ToList();
+            context.Users.RemoveRange(users);
+            await context.SaveChangesAsync();
+
+#endif
             if (!context.Users.Any())
             {
                 context.Users.AddRange(GetDefaultUser());
@@ -30,10 +36,12 @@ namespace Identity.API.Init
                     City = "CQ",
                     Country = "CN",
                     Email = "demouser@xx.com",
+                    NormalizedEmail = "demouser@xx.com".ToUpper(),
                     Id = Guid.NewGuid().ToString(),
                     Name = "DemoUser",
                     PhoneNumber = "1234567890",
                     UserName = "demouser@xx.com",
+                    NormalizedUserName = "demouser@xx.com".ToUpper(),
                     State = "WA",
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                 };
