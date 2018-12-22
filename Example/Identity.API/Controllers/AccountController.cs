@@ -10,6 +10,7 @@ using JieDDDFramework.Module.Identity.Models;
 using JieDDDFramework.Web;
 using JieDDDFramework.Web.ModelValidate;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -46,9 +47,9 @@ namespace Identity.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody, Validator]LoginViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user!=null && await _userManager.CheckPasswordAsync(user,model.Password))
-            {
+            //var user = await _userManager.FindByEmailAsync(model.Email);
+            //if (user!=null && await _userManager.CheckPasswordAsync(user,model.Password))
+            //{
                 var discoveryResponse  = await DiscoveryClient.GetAsync(_jwtSettings.Issuer);
                 var tokenClient = new TokenClient(discoveryResponse.TokenEndpoint,_jwtSettings.ClientId,_jwtSettings.SecretKey);
                 var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(model.Email, model.Password);
@@ -58,11 +59,18 @@ namespace Identity.API.Controllers
                     return Success(new { tokenResponse,model.ReturnUrl});
                 }
                 return Success(new { tokenResponse });
-            }
-            else
-            {
-                return Fail("登陆失败");
-            }
+            //}
+            //else
+            //{
+            //    return Fail("登陆失败");
+            //}
+        }
+
+        [Authorize]
+        [HttpGet]
+        public  IActionResult UserInfo()
+        {
+            return Success(User.Claims.Select(x=>new {x.Type,x.Value}));
         }
     }
 }

@@ -26,6 +26,7 @@ using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
 using JieDDDFramework.Web.Filters;
 using JieDDDFramework.Web.Validate;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -58,7 +59,7 @@ namespace Identity.API
         {
             services.AddMvc()
                 .AddCustomFilter()
-                .AddCustomFluentValidation(x=>
+                .AddCustomFluentValidation(x =>
                 {
                     x.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                     x.RegisterValidatorsFromAssemblyContaining<LoginViewModelValidator>();
@@ -110,12 +111,17 @@ namespace Identity.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseStaticFiles();
             app.UseForwardedHeaders();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
             app.UseSwagger()
-                .UseSwaggerUI(x=>x.SwaggerEndpoint("/swagger/v1/swagger.json","IdentityServerAPI"));
+                .UseSwaggerUI(x =>
+                {
+                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityServerAPI");
+                    x.OAuthClientId("swagger");
+                });
         }
     }
 
@@ -135,42 +141,53 @@ namespace Identity.API
                     TermsOfService = "None",
                     Description = "提供oauth2的授权服务"
                 });
-                options.AddSecurityDefinition("oauth2",new OAuth2Scheme()
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme()
                 {
                     Flow = "implicit",
-                    AuthorizationUrl = setting.Issuer+ "/connect/authorize",
-                    TokenUrl = setting.Issuer+ "/connect/token",
+                    AuthorizationUrl = setting.Issuer + "/connect/authorize",
+                    TokenUrl = setting.Issuer + "/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
-
-                        { IdentityServerConstants.StandardScopes.OpenId,"User Identity"},
-                        { IdentityServerConstants.StandardScopes.Profile,"User Profile"},
-                        { "identity", "Identity API" }
+                        {"identityserver", "Identity API"}
                     }
                 });
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,typeof(Startup).Namespace+".xml"));
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"{Bearer}{空格}{token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                options.AddSecurityRequirement(security);
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, typeof(Startup).Namespace + ".xml"));
             });
 
             return services;
         }
 
-        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+            IConfiguration configuration)
         {
-            var setting = services.ConfigureOption(configuration,()=>new JwtSettings());
+            var setting = services.ConfigureOption(configuration, () => new JwtSettings());
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.Authority = setting.Issuer;
-                o.Audience = setting.Audience;
-                o.RequireHttpsMetadata = false;
-                o.TokenValidationParameters =new TokenValidationParameters()
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
-                };
-            });
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(o =>
+                {
+                    o.Authority = setting.Issuer;
+                    o.Audience = setting.Audience;
+                    o.RequireHttpsMetadata = false;
+                    o.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
+                    };
+                });
             return services;
         }
     }

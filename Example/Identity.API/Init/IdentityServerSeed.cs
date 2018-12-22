@@ -11,7 +11,7 @@ namespace Identity.API.Init
         {
             return new List<ApiResource>()
             {
-                new ApiResource("identity","Identity Service")
+                new ApiResource("identityserver","Identity Service")
             };
         }
         public static IEnumerable<IdentityResource> GetResources()
@@ -105,6 +105,21 @@ namespace Identity.API.Init
                 },
                 new Client
                 {
+                    ClientId = "swagger",
+                    ClientName = "Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "identityserver"
+                    }
+                },
+                new Client
+                {
                     ClientId = "identityswaggerui",
                     ClientName = "Identity Swagger UI",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
@@ -114,7 +129,7 @@ namespace Identity.API.Init
                     {
                         new Secret(secret.Sha256())
                     },
-                    RedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
+                    RedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/oauth2-redirect.html" },
                     PostLogoutRedirectUris = { $"{clientsUrl["IdentityApi"]}/swagger/" },
 
                     AllowedScopes =
@@ -122,7 +137,7 @@ namespace Identity.API.Init
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "identity"
+                        "identityserver"
                     }
                 }
             };
