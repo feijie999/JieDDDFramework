@@ -115,7 +115,7 @@ namespace JieDDDFramework.Core.RequestProvider
 
             if (!string.IsNullOrEmpty(token))
             {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
             return httpClient;
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JieDDDFramework.Data.EntityFramework
 {
-    public static class IQueryablePageListExtensions
+    public static class QueryablePageListExtensions
     {
         public static async Task<IPagedList<T>> ToPageResult<T>(this IQueryable<T> query, int pageIndex, int pageSize, bool findTotalCount = true, CancellationToken cancellationToken = default(CancellationToken))
         {
