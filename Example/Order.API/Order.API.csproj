@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JieDDDFramework.Data.EntityFramework\JieDDDFramework.Data.EntityFramework.csproj" />
-    <ProjectReference Include="..\JieDDDFramework.Web\JieDDDFramework.Web.csproj" />
-    <ProjectReference Include="..\Module\JieDDDFramework.Module.Identity\JieDDDFramework.Module.Identity.csproj" />
+    <ProjectReference Include="..\..\JieDDDFramework.Data.EntityFramework\JieDDDFramework.Data.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\JieDDDFramework.Web\JieDDDFramework.Web.csproj" />
+    <ProjectReference Include="..\..\Module\JieDDDFramework.Module.Identity\JieDDDFramework.Module.Identity.csproj" />
     <ProjectReference Include="..\Order.Domain\Order.Domain.csproj" />
   </ItemGroup>
 
