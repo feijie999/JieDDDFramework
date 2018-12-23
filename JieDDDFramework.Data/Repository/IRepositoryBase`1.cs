@@ -11,7 +11,7 @@ using JieDDDFramework.Core.Domain;
 
 namespace JieDDDFramework.Data.Repository
 {
-    public interface IRepositoryBase<TEntity> : IDisposable where TEntity :  Entity, new()
+    public interface IRepositoryBase<TEntity> : IDisposable where TEntity :  IEntity, new()
     {
         void Insert(TEntity entity);
         
@@ -66,6 +66,12 @@ namespace JieDDDFramework.Data.Repository
         /// <param name="entities">The entities.</param>
         void Delete(IEnumerable<TEntity> entities);
 
+        /// <summary>
+        /// 返回领域根对象
+        /// <exception cref="Core.Exceptions.DomainException">当<param name="TEntity"/>不为IAggregateRoot时</exception>
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
         TEntity FindEntity(object keyValue);
 
         TEntity FindEntity(Expression<Func<TEntity, bool>> criterion);
@@ -73,7 +79,6 @@ namespace JieDDDFramework.Data.Repository
         Task<TEntity> FindEntityAsync(object keyValue);
 
         Task<TEntity> FindEntityAsync(Expression<Func<TEntity, bool>> criterion);
-
         IQueryable<TEntity> Tables();
 
         IQueryable<TEntity> Tables(Expression<Func<TEntity, bool>> criterion);

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using JieDDDFramework.Core.Domain;
+using JieDDDFramework.Core.Exceptions;
+using JieDDDFramework.Core.Exceptions.Utilities;
 using JieDDDFramework.Data.EntityFramework.DbContext;
 using JieDDDFramework.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +20,13 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
     /// 基于EF实现的默认仓储
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TEntity> : IRepositoryBase<TEntity> where TEntity : Entity, new()
+    public class Repository<TEntity> : IRepositoryBase<TEntity> where TEntity : class, IEntity, new()
     {
         protected readonly DomainDbContext _domainDbContext;
         protected DbSet<TEntity> _entities;
 
         protected DbSet<TEntity> Entities => _entities ?? (_entities = _domainDbContext.Set<TEntity>());
+
         public IUnitOfWork UnitOfWork => _domainDbContext;
 
         public Repository(DomainDbContext context) => _domainDbContext = context ?? throw new ArgumentException(nameof(context));
@@ -79,8 +82,16 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
         public virtual void Delete(params TEntity[] entities) => Entities.RemoveRange(entities);
 
         public virtual void Delete(IEnumerable<TEntity> entities) => Entities.RemoveRange(entities);
-
-        public virtual TEntity FindEntity(object keyValue) => Entities.Find(keyValue);
+        
+        public TEntity FindEntity(object keyValue)
+        {
+            var entity = Entities.Find(keyValue);
+            if (entity is IAggregateRoot)
+            {
+                return entity;
+            }
+           throw new DomainException("Entity must implement IAggregateRoot");
+        }
 
         public virtual TEntity FindEntity(Expression<Func<TEntity, bool>> criterion) => Entities.SingleOrDefault(criterion);
 

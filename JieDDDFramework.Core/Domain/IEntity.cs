@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JieDDDFramework.Core.Domain
 {
-    public interface IAggregateRoot : IEntity
+    public interface IEntity
     {
     }
 }

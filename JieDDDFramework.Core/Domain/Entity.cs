@@ -5,7 +5,7 @@ using MediatR;
 
 namespace JieDDDFramework.Core.Domain
 {
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         protected int? RequestedHashCode;
 
