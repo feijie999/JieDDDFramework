@@ -93,14 +93,39 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
            throw new DomainException("Entity must implement IAggregateRoot");
         }
 
-        public virtual TEntity FindEntity(Expression<Func<TEntity, bool>> criterion) => Entities.SingleOrDefault(criterion);
+        public virtual TEntity FindEntity(Expression<Func<TEntity, bool>> criterion)
+        {
+            var entity = Entities.SingleOrDefault(criterion);
+            if (entity is IAggregateRoot)
+            {
+                return entity;
+            }
+            throw new DomainException("Entity must implement IAggregateRoot");
+        }
 
-        public virtual Task<TEntity> FindEntityAsync(object keyValue) => Entities.FindAsync(keyValue);
+        public virtual async Task<TEntity> FindEntityAsync(object keyValue)
+        {
+            var entity = await Entities.FindAsync(keyValue);
+            if (entity is IAggregateRoot)
+            {
+                return entity;
+            }
+            throw new DomainException("Entity must implement IAggregateRoot");
+        }
 
-        public virtual Task<TEntity> FindEntityAsync(Expression<Func<TEntity, bool>> criterion) => Entities.SingleOrDefaultAsync(criterion);
+        public virtual async Task<TEntity> FindEntityAsync(Expression<Func<TEntity, bool>> criterion)
+        {
 
-        public virtual IQueryable<TEntity> Tables() => Entities;
+            var entity = await Entities.SingleOrDefaultAsync(criterion);
+            if (entity is IAggregateRoot)
+            {
+                return entity;
+            }
+            throw new DomainException("Entity must implement IAggregateRoot");
+        }
 
-        public virtual IQueryable<TEntity> Tables(Expression<Func<TEntity, bool>> criterion) => Entities.Where(criterion);
+        public virtual IQueryable<TEntity> Tables() => Entities.AsNoTracking();
+
+        public virtual IQueryable<TEntity> Tables(Expression<Func<TEntity, bool>> criterion) => Entities.AsNoTracking().Where(criterion);
     }
 }

@@ -74,10 +74,28 @@ namespace JieDDDFramework.Data.Repository
         /// <returns></returns>
         TEntity FindEntity(object keyValue);
 
+        /// <summary>
+        /// 返回领域根对象
+        /// <exception cref="Core.Exceptions.DomainException">当<param name="TEntity"/>不为IAggregateRoot时</exception>
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
         TEntity FindEntity(Expression<Func<TEntity, bool>> criterion);
 
+        /// <summary>
+        /// 返回领域根对象
+        /// <exception cref="Core.Exceptions.DomainException">当<param name="TEntity"/>不为IAggregateRoot时</exception>
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
         Task<TEntity> FindEntityAsync(object keyValue);
 
+        /// <summary>
+        /// 返回领域根对象
+        /// <exception cref="Core.Exceptions.DomainException">当<param name="TEntity"/>不为IAggregateRoot时</exception>
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
         Task<TEntity> FindEntityAsync(Expression<Func<TEntity, bool>> criterion);
         IQueryable<TEntity> Tables();
 
