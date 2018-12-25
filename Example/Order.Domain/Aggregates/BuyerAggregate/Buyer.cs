@@ -8,8 +8,8 @@ namespace Order.Domain.Aggregates.BuyerAggregate
 {
     public class Buyer : Entity<string>, IAggregateRoot
     {
-        public string Name { get; }
         public virtual ICollection<PaymentMethod> PaymentMethods { get; }
+        public string Name { get; }
 
         protected Buyer()
         {

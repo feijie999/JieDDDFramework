@@ -15,8 +15,8 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
             string @namespace = null) where TDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             var typesToRegister = dbContext.GetType().Assembly.GetTypes()
-                .Where(x => x.BaseType != null && x.BaseType.IsGenericType &&
-                            x.BaseType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
+                .Where(x => x.BaseType != null && x.BaseType.IsGenericType &&!x.IsAbstract&&
+                            CheckBaseTypeIsIEntityTypeConfiguration(x))
                 .Where(x => string.IsNullOrEmpty(@namespace) || x.Namespace == @namespace);
             foreach (var type in typesToRegister)
             {
@@ -26,6 +26,20 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
                 //dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.ApplyConfiguration(configurationInstance);
             }
+        }
+
+        static bool CheckBaseTypeIsIEntityTypeConfiguration(Type type)
+        {
+            var baseType = type.BaseType;
+            while (baseType!=null)
+            {
+                if (baseType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
+                {
+                    return true;
+                }
+                baseType = baseType.BaseType;
+            }
+            return false;
         }
     }
 }
