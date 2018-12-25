@@ -41,7 +41,7 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
                             builder.Entity(entityType.ClrType).Property<string>(mutableProperty.Name).HasMaxLength(64);
                         }
                     }
-                    catch(Exception e)
+                    catch(Exception )
                     {
                     }
                 }

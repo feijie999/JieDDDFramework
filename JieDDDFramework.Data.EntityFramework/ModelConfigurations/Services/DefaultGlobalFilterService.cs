@@ -12,9 +12,9 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
     public class DefaultGlobalFilterService: IGlobalFilterService
     {
         private readonly ModelConfigurationOption _option;
-        public DefaultGlobalFilterService(ModelConfigurationOption option)
+        public DefaultGlobalFilterService(IOptions<ModelConfigurationOption> option)
         {
-            _option = option;
+            _option = option.Value;
         }
         public void QueryFilter<TDbContext>(ModelBuilder modelBuilder, TDbContext dbContext) where TDbContext : Microsoft.EntityFrameworkCore.DbContext
         {

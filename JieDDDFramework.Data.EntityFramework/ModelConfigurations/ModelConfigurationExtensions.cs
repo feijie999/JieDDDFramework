@@ -16,11 +16,19 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
             var option = new ModelConfigurationOption();
             setupAction?.Invoke(option);
             service.TryAddSingleton(option);
+            if (setupAction != null)
+            {
+                service.Configure(setupAction);
+            }
+            else
+            {
+                service.Configure<ModelConfigurationOption>(_=>{});
+            }
+            service.Configure(setupAction);
             service.TryAddTransient<IAutoApplyConfigurationService, DefaultAutoApplyConfigurationService>();
             service.TryAddTransient<IFixModelConfigurationService, DefaultFixModelConfigurationService>();
             service.TryAddTransient<IGlobalFilterService, DefaultGlobalFilterService>();
             service.TryAddTransient<IModelConfigurationProvider, DefaultModelConfigurationProvider>();
-            service.TryAddTransient<EFInterceptor>();
             return service;
         }
     }

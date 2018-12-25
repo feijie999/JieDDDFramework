@@ -4,15 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
 {
     public class DefaultAutoApplyConfigurationService : IAutoApplyConfigurationService
     {
         private readonly ModelConfigurationOption _option;
-        public DefaultAutoApplyConfigurationService(ModelConfigurationOption option)
+        public DefaultAutoApplyConfigurationService(IOptions<ModelConfigurationOption> option)
         {
-            _option = option;
+            _option = option.Value;
         }
 
         public void AutoApplyConfiguration<TDbContext>(ModelBuilder modelBuilder, TDbContext dbContext)
