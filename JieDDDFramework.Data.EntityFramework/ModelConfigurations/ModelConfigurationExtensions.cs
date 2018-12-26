@@ -24,7 +24,6 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
             {
                 service.Configure<ModelConfigurationOption>(_=>{});
             }
-            service.Configure(setupAction);
             service.TryAddTransient<IAutoApplyConfigurationService, DefaultAutoApplyConfigurationService>();
             service.TryAddTransient<IFixModelConfigurationService, DefaultFixModelConfigurationService>();
             service.TryAddTransient<IGlobalFilterService, DefaultGlobalFilterService>();
