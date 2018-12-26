@@ -20,7 +20,7 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
     /// 基于EF实现的默认仓储
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TEntity> : IRepositoryBase<TEntity> where TEntity : class, IEntity, new()
+    public class Repository<TEntity> : IRepositoryBase<TEntity> where TEntity : class, IEntity
     {
         protected readonly DomainDbContext _domainDbContext;
         protected DbSet<TEntity> _entities;

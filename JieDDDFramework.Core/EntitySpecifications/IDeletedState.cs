@@ -6,8 +6,8 @@ namespace JieDDDFramework.Core.EntitySpecifications
 {
     public interface IDeletedState
     {
-        bool Deleted { get; set; }
+        bool Deleted { get;  }
 
-        DateTime? DeletedTime { get; set; }
+        DateTime? DeletedTime { get; }
     }
 }

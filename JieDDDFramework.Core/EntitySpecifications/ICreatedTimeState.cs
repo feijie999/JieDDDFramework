@@ -6,6 +6,6 @@ namespace JieDDDFramework.Core.EntitySpecifications
 {
     public interface ICreatedTimeState
     {
-        DateTime CreatedTime { get; set; }
+        DateTime CreatedTime { get;  }
     }
 }

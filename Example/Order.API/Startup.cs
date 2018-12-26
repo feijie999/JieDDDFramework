@@ -18,6 +18,7 @@ using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
 using JieDDDFramework.Web.Filters;
 using JieDDDFramework.Web.Validate;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -75,7 +76,7 @@ namespace Order.API
             services.AddMigrateService()
                 .AddDbSeed(new OrderDbContextSeed());
             services.AddEFModelConfiguration();
-
+            services.AddMediatR();
             
             services.AddJwtAuthentication(Configuration.GetSection("JwtSettings"));
             services.AddCustomSwagger(Configuration);

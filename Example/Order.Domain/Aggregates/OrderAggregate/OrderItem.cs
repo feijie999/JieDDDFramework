@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using JieDDDFramework.Core.Domain;
+using JieDDDFramework.Core.Exceptions;
 
 namespace Order.Domain.Aggregates.OrderAggregate
 {
@@ -9,7 +10,7 @@ namespace Order.Domain.Aggregates.OrderAggregate
     {
         public string ProductId { get; }
         public string ProductName { get; }
-        public int ProductCount { get; }
+        public int ProductCount { get; private set; }
         public decimal ProductPrice { get; }
 
         protected OrderItem() { }
@@ -19,6 +20,16 @@ namespace Order.Domain.Aggregates.OrderAggregate
             ProductName = productName;
             ProductCount = productCount;
             ProductPrice = productPrice;
+        }
+
+        public void SetNewDiscount(decimal discount)
+        {
+            if (discount<0)
+            {
+                throw new DomainException("Discount is not valid");
+            }
+
+            ProductCount = (int) discount;
         }
     }
 }

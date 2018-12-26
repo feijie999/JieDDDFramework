@@ -11,8 +11,10 @@ using JieDDDFramework.Core.Domain;
 
 namespace JieDDDFramework.Data.Repository
 {
-    public interface IRepositoryBase<TEntity> : IDisposable where TEntity :  IEntity, new()
+    public interface IRepositoryBase<TEntity> : IDisposable where TEntity :  IEntity
     {
+        IUnitOfWork UnitOfWork { get; }
+
         void Insert(TEntity entity);
         
         void Insert(params TEntity[] entities);
