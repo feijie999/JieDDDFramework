@@ -35,6 +35,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Order.API.Models;
+using Order.Domain.Application.Commands;
 using StackExchange.Redis;
 using Order.Domain.DbContexts;
 using Swashbuckle.AspNetCore.Swagger;
@@ -76,7 +77,7 @@ namespace Order.API
             services.AddMigrateService()
                 .AddDbSeed(new OrderDbContextSeed());
             services.AddEFModelConfiguration();
-            services.AddMediatR();
+            services.AddMediatR(typeof(CreateOrderCommandHandler));
             
             services.AddJwtAuthentication(Configuration.GetSection("JwtSettings"));
             services.AddCustomSwagger(Configuration);

@@ -8,10 +8,12 @@ namespace Order.Domain.Aggregates.OrderAggregate
 {
     public class OrderItem : Entity<string>
     {
-        public string ProductId { get; }
-        public string ProductName { get; }
+        public string ProductId { get; private set; }
+        public string ProductName { get; private set; }
         public int ProductCount { get; private set; }
-        public decimal ProductPrice { get; }
+        public decimal ProductPrice { get; private set; }
+        public string OrderId { get; private set; }
+        public virtual Order Order { get; private set; }
 
         protected OrderItem() { }
         public OrderItem(string productId, string productName, int productCount, decimal productPrice)

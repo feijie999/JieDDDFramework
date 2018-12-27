@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JieDDDFramework.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -16,7 +17,7 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
 
         protected virtual void SetIdLengthLimit(ModelBuilder builder)
         {
-            foreach (var entityType in builder.Model.GetEntityTypes())
+            foreach (var entityType in builder.Model.GetEntityTypes().Where(x=>x.ClrType!=null&&x.ClrType.GetInterfaces().Contains(typeof(IEntity))))
             {
                 var keys = entityType.FindPrimaryKey();
                 if (keys == null)

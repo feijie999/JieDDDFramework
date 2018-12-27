@@ -15,7 +15,7 @@ namespace Order.Domain.Aggregates.BuyerAggregate
 
         public virtual IReadOnlyCollection<OrderAggregate.Order> Orders => _orders;
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public Buyer()
         {

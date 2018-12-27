@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using JieDDDFramework.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -18,9 +19,9 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations.Services
         }
         public void QueryFilter<TDbContext>(ModelBuilder modelBuilder, TDbContext dbContext) where TDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
-            foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes())
+            foreach (var mutableEntityType in modelBuilder.Model.GetEntityTypes().Where(x => x.ClrType != null && x.ClrType.GetInterfaces().Contains(typeof(IEntity))))
             {
-                foreach (var mutableProperty in mutableEntityType.GetProperties().Where(x => _option.QueryFilterFields.Contains(x.Name)||x.ClrType == typeof(bool)))
+                foreach (var mutableProperty in mutableEntityType.GetProperties().Where(x => _option.QueryFilterFields.Contains(x.Name)&&x.ClrType == typeof(bool)))
                 {
                     var parameter = Expression.Parameter(mutableEntityType.ClrType, "x");
                     var body = Expression.Equal(Expression.Call(

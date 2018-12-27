@@ -18,13 +18,13 @@ namespace Order.Domain.Aggregates.OrderAggregate
         }
         public Address Address { get; private set; }
 
-        public int? _orderStatusId { get; private set; }
+        public int? OrderStatusId { get; private set; }
         public virtual OrderStatus OrderStatus { get; private set; }
 
         public string BuyerId { get; private set; }
-        public virtual Buyer Buyer { get; }
+        public virtual Buyer Buyer { get; private set; }
 
-        private string _paymentMethodId;
+        public string PaymentMethodId { get; private set; }
         public virtual PaymentMethod PaymentMethod { get; private set; }
         public DateTime CreatedTime { get; private set; }
         public bool Deleted { get; private set; }
@@ -35,8 +35,8 @@ namespace Order.Domain.Aggregates.OrderAggregate
         public Order(string userId, string userName, Address address,string buyerId = null, string paymentMethodId = null) : this()
         {
             BuyerId = buyerId;
-            _paymentMethodId = paymentMethodId;
-            _orderStatusId = OrderStatus.Submitted.Id;
+            PaymentMethodId = paymentMethodId;
+            OrderStatusId = OrderStatus.Submitted.Id;
             Address = address;
 
             var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, userName);
@@ -67,7 +67,7 @@ namespace Order.Domain.Aggregates.OrderAggregate
 
         public void SetPaymentId(string id)
         {
-            _paymentMethodId = id;
+            PaymentMethodId = id;
         }
 
         public void SetBuyerId(string id)

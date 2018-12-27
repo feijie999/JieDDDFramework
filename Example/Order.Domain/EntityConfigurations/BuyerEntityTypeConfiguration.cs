@@ -25,7 +25,7 @@ namespace Order.Domain.EntityConfigurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             //var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
-            buyerConfiguration.Property(x => x.PaymentMethods);
+            //buyerConfiguration.Property(x => x.PaymentMethods);
             //navigation.SetPropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
         }
     }
