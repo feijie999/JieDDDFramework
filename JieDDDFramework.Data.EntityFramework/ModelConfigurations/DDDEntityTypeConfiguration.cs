@@ -9,12 +9,12 @@ namespace JieDDDFramework.Data.EntityFramework.ModelConfigurations
 {
     public abstract class DDDEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : class,IEntity
     {
-        public virtual void Configure(EntityTypeBuilder<TEntity> buyerConfiguration)
+        public virtual void Configure(EntityTypeBuilder<TEntity> configuration)
         {
-            buyerConfiguration.Ignore(b => b.DomainEvents);
-            Map(buyerConfiguration);
+            configuration.Ignore(b => b.DomainEvents);
+            Map(configuration);
         }
 
-        public abstract void Map(EntityTypeBuilder<TEntity> buyerConfiguration);
+        public abstract void Map(EntityTypeBuilder<TEntity> configuration);
     }
 }
