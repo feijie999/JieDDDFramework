@@ -26,7 +26,7 @@ namespace JieDDDFramework.Core.MediatR.Behaviors
 
            if (failures.Any())
            {
-               throw new DomainException(
+               throw new KnownException(
                    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
             }
 

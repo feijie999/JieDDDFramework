@@ -59,6 +59,7 @@ namespace Order.API
      .AddCustomFluentValidation(x =>
      {
          x.RegisterValidatorsFromAssemblyContaining<OrderAddedViewModelValidator>();
+         x.RegisterValidatorsFromAssemblyContaining<CreateOrderCommand.CreateOrderCommandValidator>();
      })
      .AddControllersAsServices();
             var settings = services.ConfigureOption(Configuration, () => new AppSettings());
