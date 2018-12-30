@@ -9,27 +9,28 @@ using MediatR;
 namespace Order.Domain.Application.Commands
 {
     public class CreateOrderCommand
-            : IRequest<bool>
+        : IRequest<bool>
     {
-        public List<OrderItemDTO> OrderItems { get; private set; }
-        public string UserId { get; private set; }
-        public string UserName { get; private set; }
+        public List<OrderItemDTO> OrderItems { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
 
-        public string City { get; private set; }
-        public string Street { get; private set; }
-        
-        public string State { get; private set; }
-        
-        public string Country { get; private set; }
-        
-        public string ZipCode { get; private set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+
+        public string State { get; set; }
+
+        public string Country { get; set; }
+
+        public string ZipCode { get; set; }
 
         public CreateOrderCommand()
         {
             OrderItems = new List<OrderItemDTO>();
         }
 
-        public CreateOrderCommand(List<OrderItemDTO> orderItem, string userId, string userName, string city, string street, string state, string country, string zipcode)
+        public CreateOrderCommand(List<OrderItemDTO> orderItem, string userId, string userName, string city,
+            string street, string state, string country, string zipcode)
         {
             OrderItems = orderItem;
             UserId = userId;
@@ -82,4 +83,5 @@ namespace Order.Domain.Application.Commands
             }
         }
     }
+
 }

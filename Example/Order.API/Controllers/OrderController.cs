@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.Extensions;
 using JieDDDFramework.Data.EntityFramework;
 using JieDDDFramework.Data.Repository;
 using JieDDDFramework.Web;
@@ -10,6 +11,7 @@ using JieDDDFramework.Web.ModelValidate;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Order.Domain.Application.Commands;
 
@@ -37,6 +39,8 @@ namespace Order.API.Controllers
         [HttpPost,Route("create")]
         public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand command)
         {
+            command.UserId = User.GetSubjectId();
+            command.UserName = User.GetDisplayName();
             var result = await _mediator.Send(command);
             return result?Success():Fail();
         }
