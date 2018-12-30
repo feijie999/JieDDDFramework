@@ -96,7 +96,6 @@ namespace Identity.API
             services.AddIdentityServer()
                 .AddSigningCredential(new RsaSecurityKey(rsa))
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
-            services.AddJwtAuthentication(Configuration.GetSection("JwtSettings"));
             services.AddCustomSwagger(Configuration);
             var builder = new ContainerBuilder();
             builder.RegisterDynamicProxy(configure => configure.Interceptors.ConfigureEFInterceptors());
@@ -169,26 +168,5 @@ namespace Identity.API
             return services;
         }
 
-        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            var setting = services.ConfigureOption(configuration, () => new JwtSettings());
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(o =>
-                {
-                    o.Authority = setting.Issuer;
-                    o.Audience = setting.Audience;
-                    o.RequireHttpsMetadata = false;
-                    o.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
-                    };
-                });
-            return services;
-        }
     }
 }

@@ -10,9 +10,13 @@ using AspectCore.Extensions.Autofac;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using JieDDDFramework.Core.Configures;
+using JieDDDFramework.Core.MediatR;
+using JieDDDFramework.Data.EntityFramework;
 using JieDDDFramework.Data.EntityFramework.AopConfigurations;
 using JieDDDFramework.Data.EntityFramework.Migrate;
 using JieDDDFramework.Data.EntityFramework.ModelConfigurations;
+using JieDDDFramework.Data.EntityFramework.Repositories;
+using JieDDDFramework.Data.Repository;
 using JieDDDFramework.Module.Identity;
 using JieDDDFramework.Module.Identity.Data;
 using JieDDDFramework.Module.Identity.Models;
@@ -55,13 +59,13 @@ namespace Order.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-     .AddCustomFilter()
-     .AddCustomFluentValidation(x =>
-     {
-         x.RegisterValidatorsFromAssemblyContaining<OrderAddedViewModelValidator>();
-         x.RegisterValidatorsFromAssemblyContaining<CreateOrderCommand.CreateOrderCommandValidator>();
-     })
-     .AddControllersAsServices();
+                .AddCustomFilter()
+                .AddCustomFluentValidation(x =>
+                {
+                    x.RegisterValidatorsFromAssemblyContaining<OrderAddedViewModelValidator>();
+                    x.RegisterValidatorsFromAssemblyContaining<CreateOrderCommand.CreateOrderCommandValidator>();
+                })
+                .AddControllersAsServices();
             var settings = services.ConfigureOption(Configuration, () => new AppSettings());
             if (settings.IsClusterEnv)
             {
@@ -70,16 +74,18 @@ namespace Order.API
             }
 
             var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddDbContext<OrderDbContext>(options=>
-            {
-                options.UseMySql(settings.ConnectionString,
-                    sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
-            });
+            services.AddDbContext<OrderDbContext>(options =>
+                {
+                    options.UseMySql(settings.ConnectionString,
+                        sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
+                })
+                .AddRepository<OrderDbContext>();
             services.AddMigrateService()
                 .AddDbSeed(new OrderDbContextSeed());
             services.AddEFModelConfiguration();
-            services.AddMediatR(typeof(CreateOrderCommandHandler));
-            
+            services.AddMediatR(typeof(CreateOrderCommandHandler))
+                .AddDefaultMediatRBehaviors();
+
             services.AddJwtAuthentication(Configuration.GetSection("JwtSettings"));
             services.AddCustomSwagger(Configuration);
             var builder = new ContainerBuilder();
@@ -101,7 +107,7 @@ namespace Order.API
                 .UseSwaggerUI(x =>
                 {
                     x.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderServerAPI");
-                    x.OAuthClientId("orderswagger");
+                    x.OAuthClientId("orderswaggerui");
                 });
         }
     }
@@ -158,16 +164,11 @@ namespace Order.API
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(o =>
+            }).AddJwtBearer(o =>
                 {
                     o.Authority = setting.Issuer;
                     o.Audience = setting.Audience;
                     o.RequireHttpsMetadata = false;
-                    o.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(setting.SecretKey))
-                    };
                 });
             return services;
         }

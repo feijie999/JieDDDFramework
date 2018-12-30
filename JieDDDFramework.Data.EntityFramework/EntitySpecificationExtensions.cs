@@ -45,5 +45,11 @@ namespace JieDDDFramework.Data.EntityFramework
         {
             return query.Where(x => x.Deleted == false);
         }
+
+        public static IOrderedQueryable<T> OrderByCreatedTime<T>(this IQueryable<T> query, bool desc = true)
+            where T : class, ICreatedTimeState
+        {
+            return query.OrderByDescending(x => x.CreatedTime);
+        }
     }
 }

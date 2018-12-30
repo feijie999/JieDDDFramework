@@ -4,5 +4,32 @@
         <name>Order.API</name>
     </assembly>
     <members>
+        <member name="M:Order.API.Controllers.AccountController.Login(Identity.API.Models.LoginViewModel)">
+             <summary>
+             登录
+             </summary>
+             <remarks>
+                 {
+                    "email": "demouser@xx.com",
+                    "password": "123456"
+            }
+             </remarks>
+             <param name="model"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Order.API.Controllers.OrderController.CreateOrder(Order.Domain.Application.Commands.CreateOrderCommand)">
+            <summary>
+            创建订单
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Order.API.Controllers.OrderController.Orders(JieDDDFramework.Web.Models.PagedCriteria)">
+            <summary>
+            订单列表
+            </summary>
+            <param name="criteria"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

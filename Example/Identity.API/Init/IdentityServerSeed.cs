@@ -11,6 +11,7 @@ namespace Identity.API.Init
         {
             return new List<ApiResource>()
             {
+                new ApiResource("order", "Orders Service"),
                 new ApiResource("identityserver","Identity Service")
             };
         }
@@ -92,12 +93,16 @@ namespace Identity.API.Init
                 {
                     ClientId = "orderswaggerui",
                     ClientName = "Order Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowAccessTokensViaBrowser = true,
-
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = { $"{clientsUrl["OrderApi"]}/swagger/" },
                     PostLogoutRedirectUris = { $"{clientsUrl["OrderApi"]}/swagger/" },
 
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret(secret.Sha256())
+                    },
                     AllowedScopes =
                     {
                         "order"

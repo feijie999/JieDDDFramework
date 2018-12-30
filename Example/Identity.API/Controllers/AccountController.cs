@@ -65,12 +65,5 @@ namespace Identity.API.Controllers
             //    return Fail("登陆失败");
             //}
         }
-
-        [Authorize]
-        [HttpGet]
-        public  IActionResult UserInfo()
-        {
-            return Success(User.Claims.Select(x=>new {x.Type,x.Value}));
-        }
     }
 }
