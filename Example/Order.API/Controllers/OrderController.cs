@@ -40,7 +40,7 @@ namespace Order.API.Controllers
         public async Task<IActionResult> CreateOrder([FromBody]CreateOrderCommand command)
         {
             command.UserId = User.GetSubjectId();
-            command.UserName = User.GetDisplayName();
+            command.UserName = User.GetName();
             var result = await _mediator.Send(command);
             return result?Success():Fail();
         }
