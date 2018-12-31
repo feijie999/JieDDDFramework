@@ -9,7 +9,7 @@ namespace Order.Domain.Aggregates.BuyerAggregate
     {
         public string FreeCode { get; private set; }
         
-        public PaymentType PaymentType { get; private set; }
+        public virtual PaymentType PaymentType { get; private set; }
 
         public PaymentMethod() { }
         public PaymentMethod(string freeCode, PaymentType paymentType)

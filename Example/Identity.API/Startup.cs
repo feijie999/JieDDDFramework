@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using AspectCore.Configuration;
@@ -90,11 +91,12 @@ namespace Identity.API
                 .AddDbSeed(new ConfigurationDbContextSeed(Configuration))
                 .AddDbSeed(new IdentityUserDbContextSeed());
             services.AddEFModelConfiguration();
-
-            var rsa = new RSACryptoServiceProvider();
-            rsa.ImportCspBlob(Convert.FromBase64String(settings.RsaPrivateKey));
+            
             services.AddIdentityServer()
-                .AddSigningCredential(new RsaSecurityKey(rsa))
+                //.AddDeveloperSigningCredential()
+                .AddSigningCredential(new X509Certificate2(Path.Combine(Directory.GetCurrentDirectory(),
+                        settings.Certificates.CerPath),
+                    settings.Certificates.Password))
                 .AddDefaultIdentityServerConfig<ApplicationUser>(OptionActions);
             services.AddCustomSwagger(Configuration);
             var builder = new ContainerBuilder();

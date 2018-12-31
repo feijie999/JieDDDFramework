@@ -38,4 +38,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="cas.clientservice.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -86,7 +86,7 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
         public TEntity FindEntity(object keyValue)
         {
             var entity = Entities.Find(keyValue);
-            if (entity is IAggregateRoot)
+            if (entity == null || entity is IAggregateRoot)
             {
                 return entity;
             }
@@ -96,7 +96,7 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
         public virtual TEntity FindEntity(Expression<Func<TEntity, bool>> criterion)
         {
             var entity = Entities.SingleOrDefault(criterion);
-            if (entity is IAggregateRoot)
+            if (entity == null || entity is IAggregateRoot)
             {
                 return entity;
             }
@@ -106,7 +106,7 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
         public virtual async Task<TEntity> FindEntityAsync(object keyValue)
         {
             var entity = await Entities.FindAsync(keyValue);
-            if (entity is IAggregateRoot)
+            if (entity ==null || entity is IAggregateRoot)
             {
                 return entity;
             }
@@ -117,7 +117,7 @@ namespace JieDDDFramework.Data.EntityFramework.Repositories
         {
 
             var entity = await Entities.SingleOrDefaultAsync(criterion);
-            if (entity is IAggregateRoot)
+            if (entity == null || entity is IAggregateRoot)
             {
                 return entity;
             }

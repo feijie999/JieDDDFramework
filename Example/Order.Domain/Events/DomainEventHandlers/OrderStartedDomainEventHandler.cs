@@ -33,7 +33,7 @@ namespace Order.Domain.Events.DomainEventHandlers
             }
 
             buyer.VerifyOrAddPaymentMethod(null,
-                "123456");
+                "123456",orderStartedEvent.Order.Id);
             if (buyerOriginallyExisted)
             {
                 _buyerRepository.Update(buyer);

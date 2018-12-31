@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JieDDDFramework.Core.Domain;
 using JieDDDFramework.Core.Exceptions.Utilities;
+using Order.Domain.Events;
 
 namespace Order.Domain.Aggregates.BuyerAggregate
 {
@@ -29,12 +30,17 @@ namespace Order.Domain.Aggregates.BuyerAggregate
             Name = Check.NotEmpty(name, nameof(name));
         }
 
-        public void VerifyOrAddPaymentMethod(PaymentType paymentType, string freeCode)
+        public void VerifyOrAddPaymentMethod(PaymentType paymentType, string freeCode,string orderId)
         {
-            if (freeCode == "123456")
+            if (freeCode == "123456")//test
             {
                 var payment = new PaymentMethod(freeCode,paymentType);
+                AddDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, payment, orderId));
                 _paymentMethods.Add(payment);
+            }
+            else
+            {
+                //todo 
             }
         }
     }

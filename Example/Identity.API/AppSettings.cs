@@ -8,6 +8,12 @@ namespace Identity.API
 {
     public class AppSettings : BaseConfig
     {
-        public string RsaPrivateKey { get; set; } = "BwIAAACkAABSU0EyAAgAAAEAAQBlzs8soRnsWjc9LsmS+2WMS2fv6vPJLlyQDdtPnXko3fDMB7rYK2IFp4l2k8lpNQGMYZtcNfRDMkLwNE0S/blSS0yTycq7PHnguGVYuXflJpWBW5jDHl6PGl9dlW3jjiUQzypncibw0UEvBx5EyXZytM4G9bDyWyImpd9YVo7vsgo7w9GqOyKKspSzUcBrF7jDX7chSQ6kYWSjh1iKwQw8H0c5iZRQ8ZsE13IX6L9P5GVJufL7eMebOCt6L/5OZWIPn+lwDGVpvvMK3zuAV3mNEmtXymLGC8HYCOhXr3SGoWiM1cdqaJxdBvX3PxAxWEeyxSPVk+1DPOCPbkHEK1HAgwVhfHCvHV4eBpV/412nFne3MsmB66K3vMu0Ub0/dxguVw4fM4tbg4xvaxWwfKH7TL7salPqRZlAXDNoeSAQJf/sPQWJ7ZysIR3DH7QZNOpEsfpflP2k+ZlF3oezOFMOSJmeKbWrfdZBYH8XIs4sxTjz+oO5ZtpAu1FOzBunnPX3/5J2R7MYk6ZTWPTaS8Eaa5t+UFShrv2BwU1be75G0i0jQXQYFd3FWULgKxW/aRDcvJFfdwdmpZ8VhClwlcNGVmvI+UZ8iMH1h7/rYMB2VwiZLHuOqJVevfMeC16A9xlJ6d4f831GikLUznT+1Hijo0hiFZcqgLmAsAO9vXhzyPfJxLczvVw36A9asXW6rpJOk7QquHAyh8XlJ2VETBzZKIdH0Xr+RsZTwaC858ohlD5ksLajGEyWM9TBoOpFiAmQU+Ur0k2CUnmvxMPYBucLMkhsJLETse8r1qKic0ZlqOLrSH7K3ZfB2q0q73q8OdlP77cDT8zpYR+hPcBt24bZr6oXA0v5Emuf802rsrGYBDqzH17YWV4t3Tr1x/cZApQpOryRHMjY3JbcE0x1w6OrFSNx2rXyYNw+JpqILmgY0m2abBb4OsCW3wfYmnzpAe+I0ZkvMVS+mNTkPo07UcA7IAz9AEEa8nUyYRV+l/G+3plmeHl8X4Hbk9mA+sL6CaecUL0OSXLTbZoGksmC2j9p1LtaZLk82JqmmXb57VsF8sFWXAModQ2hnxDX+zHqTeF24vZ3zHqadfskOBG0kOYkRpQ2eG4Ou2Io2Wi1lDcUtdWwohwsMinu169noWjSITtfFlAUwm1NabnVtiXlp0Waxmn4ViuAkXP8TnF5G9eYVPnUoyzq7Lr29H2mH8PcmE6rBtG/NQnzDKK1gd3FFm1Er6ORdA48y9zEP/i0pDUA+umjlbtNUzpWedh+Jgyces9AOGLyCV6XNS8yRE8FxfsIIRsPFyhlLy6ngNKFlPoIir463qXdGdI+M9HH9k44uLG52nGXvYN/vm8h0eKk8gB2BIsyn1mnT4f5OVFg/Gf6k5zuNhUrN96O5zynPpX/WyYUYRjs2uwzMVjjETjQj8S0GMIM5AmjRDhrdO1wg0Lz/Be+KRfoshNv3U+GOFz+gTts9nPPWWnwJEuC76hEE/aLlFh7LfbrXtHcVNAyP5w1RzL67mf0hvxu/aldgD4xqaY=";
+        public Certificates Certificates { get; set; }
+    }
+
+    public class Certificates
+    {
+        public string CerPath { get; set; }
+        public string Password { get; set; }
     }
 }
