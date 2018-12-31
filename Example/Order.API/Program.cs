@@ -25,7 +25,8 @@ namespace Order.API
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                .UseUrls("http://localhost:8990")
+                .UseHttpSys()
                 .UseStartup<Startup>();
     }
 }
