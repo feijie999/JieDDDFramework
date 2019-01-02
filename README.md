@@ -34,7 +34,7 @@
 **环境**
 
 * dotnetcore 2.2
-* mysql 如使用其他关系型数据库需更改startup中如下代码已适配数据迁移功能
+* mysql 如使用其他关系型数据库需更改startup中如下代码已适配数据迁移功能
 ```csharp
  void OptionActions(DbContextOptionsBuilder option)
             {
