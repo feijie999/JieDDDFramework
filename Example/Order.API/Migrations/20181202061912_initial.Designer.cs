@@ -9,7 +9,7 @@ using Order.Domain.DbContexts;
 namespace Order.API.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20181227103119_initial")]
+    [Migration("20181202061912_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,11 @@ namespace Order.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64);
 
-                    b.Property<string>("BuyerId");
+                    b.Property<string>("BuyerId")
+                        .IsRequired();
 
-                    b.Property<string>("FreeCode");
+                    b.Property<string>("FreeCode")
+                        .HasMaxLength(32);
 
                     b.Property<int?>("PaymentTypeId");
 
@@ -52,19 +54,21 @@ namespace Order.API.Migrations
 
                     b.HasIndex("PaymentTypeId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("paymentmethods");
                 });
 
             modelBuilder.Entity("Order.Domain.Aggregates.BuyerAggregate.PaymentType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasDefaultValue(1);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentTypes");
+                    b.ToTable("paymenttypes");
                 });
 
             modelBuilder.Entity("Order.Domain.Aggregates.OrderAggregate.Order", b =>
@@ -106,9 +110,13 @@ namespace Order.API.Migrations
 
                     b.Property<int>("ProductCount");
 
-                    b.Property<string>("ProductId");
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasMaxLength(32);
 
-                    b.Property<string>("ProductName");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.Property<decimal>("ProductPrice");
 
@@ -116,19 +124,21 @@ namespace Order.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("orderItems");
                 });
 
             modelBuilder.Entity("Order.Domain.Aggregates.OrderAggregate.OrderStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasDefaultValue(1);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("orderstatus");
                 });
 
             modelBuilder.Entity("Order.Domain.Aggregates.BuyerAggregate.PaymentMethod", b =>

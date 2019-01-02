@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Order.API.Migrations
@@ -21,53 +20,51 @@ namespace Order.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderStatus",
+                name: "orderstatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false, defaultValue: 1),
+                    Name = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderStatus", x => x.Id);
+                    table.PrimaryKey("PK_orderstatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentTypes",
+                name: "paymenttypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false, defaultValue: 1),
+                    Name = table.Column<string>(maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaymentTypes", x => x.Id);
+                    table.PrimaryKey("PK_paymenttypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "paymentmethods",
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 64, nullable: false),
-                    FreeCode = table.Column<string>(nullable: true),
+                    FreeCode = table.Column<string>(maxLength: 32, nullable: true),
                     PaymentTypeId = table.Column<int>(nullable: true),
-                    BuyerId = table.Column<string>(nullable: true)
+                    BuyerId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("PK_paymentmethods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_buyers_BuyerId",
+                        name: "FK_paymentmethods_buyers_BuyerId",
                         column: x => x.BuyerId,
                         principalTable: "buyers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Payments_PaymentTypes_PaymentTypeId",
+                        name: "FK_paymentmethods_paymenttypes_PaymentTypeId",
                         column: x => x.PaymentTypeId,
-                        principalTable: "PaymentTypes",
+                        principalTable: "paymenttypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -99,35 +96,35 @@ namespace Order.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_orders_OrderStatus_OrderStatusId",
+                        name: "FK_orders_orderstatus_OrderStatusId",
                         column: x => x.OrderStatusId,
-                        principalTable: "OrderStatus",
+                        principalTable: "orderstatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_orders_Payments_PaymentMethodId",
+                        name: "FK_orders_paymentmethods_PaymentMethodId",
                         column: x => x.PaymentMethodId,
-                        principalTable: "Payments",
+                        principalTable: "paymentmethods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItems",
+                name: "orderItems",
                 columns: table => new
                 {
                     Id = table.Column<string>(maxLength: 64, nullable: false),
-                    ProductId = table.Column<string>(nullable: true),
-                    ProductName = table.Column<string>(nullable: true),
+                    ProductId = table.Column<string>(maxLength: 32, nullable: false),
+                    ProductName = table.Column<string>(maxLength: 32, nullable: false),
                     ProductCount = table.Column<int>(nullable: false),
                     ProductPrice = table.Column<decimal>(nullable: false),
                     OrderId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.PrimaryKey("PK_orderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_orders_OrderId",
+                        name: "FK_orderItems_orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "orders",
                         principalColumn: "Id",
@@ -135,8 +132,8 @@ namespace Order.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderId",
-                table: "OrderItems",
+                name: "IX_orderItems_OrderId",
+                table: "orderItems",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
@@ -155,35 +152,35 @@ namespace Order.API.Migrations
                 column: "PaymentMethodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_BuyerId",
-                table: "Payments",
+                name: "IX_paymentmethods_BuyerId",
+                table: "paymentmethods",
                 column: "BuyerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_PaymentTypeId",
-                table: "Payments",
+                name: "IX_paymentmethods_PaymentTypeId",
+                table: "paymentmethods",
                 column: "PaymentTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderItems");
+                name: "orderItems");
 
             migrationBuilder.DropTable(
                 name: "orders");
 
             migrationBuilder.DropTable(
-                name: "OrderStatus");
+                name: "orderstatus");
 
             migrationBuilder.DropTable(
-                name: "Payments");
+                name: "paymentmethods");
 
             migrationBuilder.DropTable(
                 name: "buyers");
 
             migrationBuilder.DropTable(
-                name: "PaymentTypes");
+                name: "paymenttypes");
         }
     }
 }
