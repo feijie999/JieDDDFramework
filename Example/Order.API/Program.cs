@@ -26,7 +26,6 @@ namespace Order.API
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseUrls("http://localhost:8990")
-                .UseHttpSys()
                 .UseStartup<Startup>();
     }
 }
