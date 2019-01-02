@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Identity.API.Models;
 using IdentityModel.Client;
@@ -33,6 +34,24 @@ namespace Identity.API.Controllers
             _jwtSettings = jwtSettings.Value;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Login(string returnUrl)
+        {
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            if (context?.IdP != null)
+            {
+                return Redirect(UrlEncoder.Default.Encode(returnUrl));
+            }
+
+            return await Login(new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                Password = "123456",
+                Email = "demouser@xx.com",
+                RememberMe = true
+            });
+        }
+
         /// <summary>
         /// 登录
         /// </summary>
@@ -45,25 +64,19 @@ namespace Identity.API.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody, Validator]LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody, Validator] LoginViewModel model)
         {
-            //var user = await _userManager.FindByEmailAsync(model.Email);
-            //if (user!=null && await _userManager.CheckPasswordAsync(user,model.Password))
-            //{
-                var discoveryResponse  = await DiscoveryClient.GetAsync(_jwtSettings.Issuer);
-                var tokenClient = new TokenClient(discoveryResponse.TokenEndpoint,_jwtSettings.ClientId,_jwtSettings.SecretKey);
-                var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(model.Email, model.Password);
-                //await _signInManager.SignInAsync(user, model.RememberMe);
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                await _signInManager.SignInAsync(user, model.RememberMe);
                 if (_interaction.IsValidReturnUrl(model.ReturnUrl))
                 {
-                    return Success(new { tokenResponse,model.ReturnUrl});
+                    return Redirect(model.ReturnUrl);
                 }
-                return Success(new { tokenResponse });
-            //}
-            //else
-            //{
-            //    return Fail("登陆失败");
-            //}
+                return Redirect("~/");
+            }
+            return Redirect("~/");
         }
     }
 }

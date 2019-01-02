@@ -14,9 +14,6 @@ namespace Identity.API.Models
         public string Email { get; set; }
         
         public string Password { get; set; }
-        
-        public bool RememberMe { get; set; }
-        public string ReturnUrl { get; set; }
     }
 
     public class LoginViewModelValidator : AbstractValidator<LoginViewModel>
@@ -27,11 +24,6 @@ namespace Identity.API.Models
                 .EmailAddress().WithMessage("请输入正确Email地址").WithErrorCode("-123");
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空");
-            When(x=>!string.IsNullOrEmpty(x.ReturnUrl), () =>
-                {
-                    RuleFor(x=>x.ReturnUrl).Must(x => x.StartsWith("http://") || x.StartsWith("https://"))
-                        .WithMessage("return url无效");
-                });
         }
     }
 }

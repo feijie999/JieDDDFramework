@@ -128,16 +128,16 @@ namespace Order.API
                     TermsOfService = "None",
                     Description = ""
                 });
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme()
-                {
-                    Flow = "implicit",
-                    AuthorizationUrl = setting.Issuer + "/connect/authorize",
-                    TokenUrl = setting.Issuer + "/connect/token",
-                    Scopes = new Dictionary<string, string>()
-                    {
-                        {"order", "Identity API"}
-                    }
-                });
+                //options.AddSecurityDefinition("oauth2", new OAuth2Scheme()
+                //{
+                //    Flow = "implicit",
+                //    AuthorizationUrl = setting.Issuer + "/connect/authorize",
+                //    TokenUrl = setting.Issuer + "/connect/token",
+                //    Scopes = new Dictionary<string, string>()
+                //    {
+                //        {"order", "Identity API"}
+                //    }
+                //});
                 var security = new Dictionary<string, IEnumerable<string>>
                 {
                     {"Bearer", new string[] { }},
