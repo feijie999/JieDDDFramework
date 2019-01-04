@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using JieDDDFramework.Core.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace JieDDDFramework.Web.Models
 {
-    public class PagedCriteria
+    public class PagedCriteria : IPagerQueryParameter
     {
         public PagedCriteria()
         {
@@ -20,16 +21,5 @@ namespace JieDDDFramework.Web.Models
         public List<PageOrders> OrderSorts { get; set; }
     }
 
-    public class PageOrders
-    {
-        public string OrderName { get; set; }
-
-        public PageOrderType OrderType { get; set; }
-    }
-
-    public enum PageOrderType : uint
-    {
-        Asc = 0,
-        Desc = 1
-    }
+   
 }
