@@ -26,15 +26,15 @@
 
 ## Example
 
-**实现了两个模块：**
+ **实现了两个模块:**
 
-* IdentityServer（Identity.API）认证服务中心
-* OrderServer (Order.API) 订单服务
+* IdentityServer（Identity.API）认证服务中心
+* OrderServer (Order.API) 订单服务
 
-**环境要求**
+**环境**
 
-* dotnetcore 2.2
-* mysql 如使用其他关系型数据库需更改startup中如下代码已适配数据迁移功能
+* dotnetcore 2.2
+* mysql 如使用其他关系型数据库需更改startup中如下代码已适配数据迁移功能
 ```csharp
  void OptionActions(DbContextOptionsBuilder option)
             {
@@ -47,9 +47,9 @@
 **启动**
 
 1. 配置appsettings.json中的数据库连接字符串
-2. 启动Identity.API（http://localhost:5000/swagger/index.html）
+2. 启动Identity.API（http://localhost:5000/swagger/index.html）
 3. 启动Order.API（http://localhost:8990/swagger/index.html）
-4. 调用Order.API中的Login接口,参数{
+4. 调用Order.API中的Login接口,参数{
     "email": "demouser@xx.com",
     "password": "123456"
 }并得到accessToken
